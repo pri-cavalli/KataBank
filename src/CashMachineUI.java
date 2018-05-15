@@ -9,31 +9,46 @@ public class CashMachineUI {
         this.scanner = new Scanner(System.in);
     }
 
-    public void printWelcome() {
-        System.out.println("Welcome to Kata Bank!");
-    }
+    public Integer getCommandId() {
+        printGetCommandIdStatement();
 
-    public Integer getCommandId(List<BankFunctionality> bankFunctionalities) {
-        System.out.println("How can Kata Bank Help you?");
-        for (BankFunctionality bankFunctionality: bankFunctionalities) {
-            System.out.println(bankFunctionality.toString());
+        Integer commandId;
+        try {
+            commandId = Integer.parseInt(scanner.next());
         }
-        System.out.print("Please, choose the number of what you want to do: ");
-        return Integer.parseInt(scanner.next());
+        catch (Exception e) {
+            printError("invalid option number. Try again next time.");
+            commandId = getCommandId();
+        }
+
+        while (!BankFunctionality.commandIdIsValid(commandId)){
+            printError("this number is not one of the command options. Try again next time.");
+            commandId = getCommandId();
+        }
+
+        return commandId;
     }
 
     public BigDecimal getDepositAmount() {
         System.out.print("How much do you want to deposit? ");
-        return scanner.nextBigDecimal();
+        return getAmount();
     }
 
     public BigDecimal getWithdrawalAmount() {
         System.out.print("How much do you want to withdrawal? ");
+        return getAmount();
+    }
+
+    private BigDecimal getAmount() {
+        while (!scanner.hasNextBigDecimal()) {
+            System.out.print("Please, input a valid amount.");
+            scanner.next();
+        }
         return scanner.nextBigDecimal();
     }
 
-    private BigDecimal getBigDecimal() {
-        return new BigDecimal(scanner.next().replaceAll(",",""));
+    public void printWelcome() {
+        System.out.println("Welcome to Kata Bank!");
     }
 
     public void printCommandStatus(boolean wasSucceed, BankFunctionality bankFunctionality) {
@@ -55,5 +70,13 @@ public class CashMachineUI {
         for (AccountMoneyIO acconuntMoneyIO: acconuntMoneyIOs) {
             System.out.println(acconuntMoneyIO.toString());
         }
+    }
+
+    private void printGetCommandIdStatement() {
+        System.out.println("How can Kata Bank Help you?");
+        for (BankFunctionality bankFunctionality: BankFunctionality.listAll()) {
+            System.out.println(bankFunctionality.toString());
+        }
+        System.out.print("Please, choose the number of what you want to do: ");
     }
 }

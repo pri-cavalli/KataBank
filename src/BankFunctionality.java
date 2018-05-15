@@ -26,8 +26,12 @@ public enum BankFunctionality {
         return name;
     }
 
-    public static List<BankFunctionality>  listAll() {
+    public static List<BankFunctionality> listAll() {
         return new ArrayList<BankFunctionality>(EnumSet.allOf(BankFunctionality.class));
+    }
+
+    public static boolean commandIdIsValid(Integer commandId) {
+        return (commandId <= BankFunctionality.listAll().size()) && (commandId >= 1);
     }
 
     private static final Map<Integer, BankFunctionality> intToTypeMap = new HashMap<Integer, BankFunctionality>();

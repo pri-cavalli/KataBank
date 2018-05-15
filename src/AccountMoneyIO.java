@@ -10,6 +10,10 @@ public abstract class AccountMoneyIO {
         this.amount = amount;
     }
 
+    public boolean isAmountValid() {
+        return amount.compareTo(BigDecimal.ZERO) != -1;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }

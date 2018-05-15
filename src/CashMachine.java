@@ -15,21 +15,11 @@ public class CashMachine {
     }
 
     private void waitClientCommand() {
-        List<BankFunctionality> allPossibleCommands = BankFunctionality.listAll();
         do {
-            Integer commandId = cashMachineUI.getCommandId(allPossibleCommands);
-            if (commandIdIsValid(commandId)) {
-                BankFunctionality command = BankFunctionality.fromInteger(commandId);
-                executeCommand(command);
-            }
-            else {
-                cashMachineUI.printError("this number is not valid.");
-            }
+            Integer commandId = cashMachineUI.getCommandId();
+            BankFunctionality command = BankFunctionality.fromInteger(commandId);
+            executeCommand(command);
         } while (true);
-    }
-
-    private boolean commandIdIsValid(Integer commandId) {
-        return (commandId <= BankFunctionality.values().length) && (commandId >= 1);
     }
 
     private void executeCommand(BankFunctionality command) {
@@ -54,15 +44,25 @@ public class CashMachine {
     private void executeDeposit() {
         BigDecimal depositAmount = cashMachineUI.getDepositAmount();
         Deposit deposit = new Deposit(depositAmount);
-        boolean wasSucceed = deposit.execute(account);
-        cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.DEPOSIT);
+        if(deposit.isAmountValid()) {
+            boolean wasSucceed = deposit.execute(account);
+            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.DEPOSIT);
+        }
+        else {
+            cashMachineUI.printError("amount invalid.");
+        }
     }
 
     private void executeWithdrawal() {
         BigDecimal withdrawalAmount = cashMachineUI.getWithdrawalAmount();
         Withdrawal withdrawal = new Withdrawal(withdrawalAmount);
-        boolean wasSucceed = withdrawal.execute(account);
-        cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.WITHDRAWAL);
+        if(withdrawal.isAmountValid()) {
+            boolean wasSucceed = withdrawal.execute(account);
+            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.WITHDRAWAL);
+        }
+        else {
+            cashMachineUI.printError("amount invalid.");
+        }
     }
 
     private void executeGetDetails() {

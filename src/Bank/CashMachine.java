@@ -1,9 +1,11 @@
 package Bank;
 
+import Actions.AccountMoneyIO;
 import Actions.Deposit;
 import Actions.Withdrawal;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class CashMachine {
     private final CashMachineUI cashMachineUI;
@@ -25,7 +27,7 @@ public class CashMachine {
             executeCommand(command);
         } while (true);
     }
-//TODO: builder strategy
+
     private void executeCommand(BankFunctionalityEnum command) {
         switch (command) {
             case DEPOSIT:
@@ -34,8 +36,11 @@ public class CashMachine {
             case WITHDRAWAL:
                 executeWithdrawal();
                 break;
-            case DETAILS:
-                executeGetDetails();
+            case HISTORIC:
+                executeShowAccountHistoric();
+                break;
+            case BALANCE:
+                executeShowAccountBalance();
                 break;
             case EXIT:
                 System.exit(0);
@@ -69,7 +74,14 @@ public class CashMachine {
         }
     }
 
-    private void executeGetDetails() {
-        cashMachineUI.printHistoric(account.getHistoric());
+    private void executeShowAccountHistoric() {
+        List<AccountMoneyIO> accountHistoric = account.getHistoric();
+        cashMachineUI.printAccountHistoric(accountHistoric);
+    }
+
+    private void executeShowAccountBalance() {
+        BigDecimal accountBalance = account.getBalance();
+        cashMachineUI.printAccountBalance(accountBalance);
+
     }
 }

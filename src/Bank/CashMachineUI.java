@@ -72,10 +72,14 @@ public class CashMachineUI {
         System.out.println("Error: " + errorMessage);
     }
 
-    public void printHistoric(List<AccountMoneyIO> acconuntMoneyIOs) {
+    public void printAccountHistoric(List<AccountMoneyIO> acconuntMoneyIOs) {
         for (AccountMoneyIO acconuntMoneyIO: acconuntMoneyIOs) {
             System.out.println(acconuntMoneyIO.toString());
         }
+    }
+
+    public void printAccountBalance(BigDecimal accountBalance) {
+        System.out.println("Your account balance is R$" + accountBalance + ".");
     }
 
     private void printCommandIdsMenu() {

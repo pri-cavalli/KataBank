@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Account {
-    private BigDecimal money;
+    private BigDecimal balance;
     private List<AccountMoneyIO> historic;
 
     public Account() {
-        this.money = BigDecimal.ZERO;
+        this.balance = BigDecimal.ZERO;
         historic = new ArrayList<AccountMoneyIO>();
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     public List<AccountMoneyIO> getHistoric() {
@@ -22,18 +26,18 @@ public class Account {
     }
 
     public void deposit(Deposit deposit) {
-        money = money.add(deposit.getAmount());
+        balance = balance.add(deposit.getAmount());
         historic.add(deposit);
     }
 
     public boolean withdrawal(Withdrawal withdrawal) {
-        BigDecimal restOfMoney = money.subtract(withdrawal.getAmount());
+        BigDecimal restOfMoney = balance.subtract(withdrawal.getAmount());
 
         if(isPossibleToWithdrawal(restOfMoney))
             return false;
 
         historic.add(withdrawal);
-        money = restOfMoney;
+        balance = restOfMoney;
         return true;
     }
 

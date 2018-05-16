@@ -5,8 +5,9 @@ import java.util.*;
 public enum BankFunctionalityEnum {
     DEPOSIT("Deposit", 1),
     WITHDRAWAL("Withdrawal", 2),
-    DETAILS("Get Bank Account Details", 3),
-    EXIT("Exit", 4);
+    BALANCE("View your Account Balance", 3),
+    HISTORIC("View you Account Historic", 4),
+    EXIT("Exit", 5);
 
     private final Integer id;
     private final String name;

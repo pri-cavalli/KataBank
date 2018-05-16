@@ -52,26 +52,23 @@ public class CashMachine {
 
     private void executeDeposit() {
         BigDecimal depositAmount = cashMachineUI.getDepositAmount();
-        Deposit deposit = new Deposit(depositAmount);
-        if(deposit.isAmountValid()) {
-            boolean wasSucceed = deposit.execute(account);
-            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionalityEnum.DEPOSIT);
-        }
-        else {
-            cashMachineUI.printError("amount invalid.");
-        }
+        executeAccountMoneyIO(new Deposit(depositAmount));
     }
 
     private void executeWithdrawal() {
         BigDecimal withdrawalAmount = cashMachineUI.getWithdrawalAmount();
-        Withdrawal withdrawal = new Withdrawal(withdrawalAmount);
-        if(withdrawal.isAmountValid()) {
-            boolean wasSucceed = withdrawal.execute(account);
-            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionalityEnum.WITHDRAWAL);
+        executeAccountMoneyIO(new Withdrawal(withdrawalAmount));
+    }
+
+    private void executeAccountMoneyIO(AccountMoneyIO accountMoneyIO) {
+        if(accountMoneyIO.isAmountValid()) {
+            boolean wasSucceed = accountMoneyIO.execute(account);
+            cashMachineUI.printCommandStatus(wasSucceed, accountMoneyIO.getBankFunctionalityEnum());
         }
         else {
             cashMachineUI.printError("amount invalid.");
         }
+
     }
 
     private void executeShowAccountHistoric() {

@@ -1,12 +1,15 @@
 package Actions;
 
 import Bank.Account;
+import Bank.BankFunctionalityEnum;
 
 import java.math.BigDecimal;
 
 public class Deposit extends AccountMoneyIO {
+
     public Deposit(BigDecimal amount) {
         super(amount);
+        bankFunctionalityEnum = BankFunctionalityEnum.DEPOSIT;
     }
 
     @Override

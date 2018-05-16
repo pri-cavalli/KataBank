@@ -1,5 +1,9 @@
+package Bank;
+
+import Actions.Deposit;
+import Actions.Withdrawal;
+
 import java.math.BigDecimal;
-import java.util.List;
 
 public class CashMachine {
     private final CashMachineUI cashMachineUI;
@@ -17,12 +21,12 @@ public class CashMachine {
     private void waitClientCommand() {
         do {
             Integer commandId = cashMachineUI.getCommandId();
-            BankFunctionality command = BankFunctionality.fromInteger(commandId);
+            BankFunctionalityEnum command = BankFunctionalityMapper.getBankFunctionalityEnumById(commandId);
             executeCommand(command);
         } while (true);
     }
-
-    private void executeCommand(BankFunctionality command) {
+//TODO: builder strategy
+    private void executeCommand(BankFunctionalityEnum command) {
         switch (command) {
             case DEPOSIT:
                 executeDeposit();
@@ -46,7 +50,7 @@ public class CashMachine {
         Deposit deposit = new Deposit(depositAmount);
         if(deposit.isAmountValid()) {
             boolean wasSucceed = deposit.execute(account);
-            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.DEPOSIT);
+            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionalityEnum.DEPOSIT);
         }
         else {
             cashMachineUI.printError("amount invalid.");
@@ -58,7 +62,7 @@ public class CashMachine {
         Withdrawal withdrawal = new Withdrawal(withdrawalAmount);
         if(withdrawal.isAmountValid()) {
             boolean wasSucceed = withdrawal.execute(account);
-            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionality.WITHDRAWAL);
+            cashMachineUI.printCommandStatus(wasSucceed, BankFunctionalityEnum.WITHDRAWAL);
         }
         else {
             cashMachineUI.printError("amount invalid.");

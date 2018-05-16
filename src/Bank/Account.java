@@ -1,3 +1,9 @@
+package Bank;
+
+import Actions.AccountMoneyIO;
+import Actions.Deposit;
+import Actions.Withdrawal;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -5,7 +11,6 @@ import java.util.List;
 public class Account {
     private BigDecimal money;
     private List<AccountMoneyIO> historic;
-    private Integer CPF;
 
     public Account() {
         this.money = BigDecimal.ZERO;

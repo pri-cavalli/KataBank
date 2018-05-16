@@ -1,16 +1,22 @@
+package Bank;
+
+import Actions.AccountMoneyIO;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
 public class CashMachineUI {
-    private Scanner scanner;
+    private final Scanner scanner;
+    private final BankFunctionalityMapper bankFunctionalityMapper;
 
     public CashMachineUI() {
         this.scanner = new Scanner(System.in);
+        this.bankFunctionalityMapper = BankFunctionalityMapper.getInstance();
     }
 
     public Integer getCommandId() {
-        printGetCommandIdStatement();
+        printCommandIdsMenu();
 
         Integer commandId;
         try {
@@ -21,7 +27,7 @@ public class CashMachineUI {
             commandId = getCommandId();
         }
 
-        while (!BankFunctionality.commandIdIsValid(commandId)){
+        while (!bankFunctionalityMapper.commandIdIsValid(commandId)){
             printError("this number is not one of the command options. Try again next time.");
             commandId = getCommandId();
         }
@@ -51,11 +57,11 @@ public class CashMachineUI {
         System.out.println("Welcome to Kata Bank!");
     }
 
-    public void printCommandStatus(boolean wasSucceed, BankFunctionality bankFunctionality) {
+    public void printCommandStatus(boolean wasSucceed, BankFunctionalityEnum bankFunctionalityEnum) {
         if (wasSucceed)
-            printSucceed(bankFunctionality.getName());
+            printSucceed(bankFunctionalityEnum.getName());
         else
-            printError(bankFunctionality.getName() + " failed.");
+            printError(bankFunctionalityEnum.getName() + " failed.");
     }
 
     public void printSucceed(String succeedMessage) {
@@ -72,10 +78,10 @@ public class CashMachineUI {
         }
     }
 
-    private void printGetCommandIdStatement() {
+    private void printCommandIdsMenu() {
         System.out.println("How can Kata Bank Help you?");
-        for (BankFunctionality bankFunctionality: BankFunctionality.listAll()) {
-            System.out.println(bankFunctionality.toString());
+        for (BankFunctionalityEnum bankFunctionalityEnum : bankFunctionalityMapper.listAll()) {
+            System.out.println(bankFunctionalityEnum.toString());
         }
         System.out.print("Please, choose the number of what you want to do: ");
     }
